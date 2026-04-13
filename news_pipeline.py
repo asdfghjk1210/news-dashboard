@@ -227,12 +227,14 @@ def save_excel(articles: list[dict], path: str):
 # 4. HTML 대시보드 저장
 # ─────────────────────────────────────
 def save_html(articles: list[dict], path: str):
+    import json
+    from collections import Counter
+
     now_str = datetime.now().strftime("%Y년 %m월 %d일")
     total = len(articles)
 
-    counts = {}
-    for cat in KEYWORDS:
-        counts[cat] = sum(1 for a in articles if a.get("유형") == cat)
+    # ── 통계 카드 ──
+    counts = {cat: sum(1 for a in articles if a.get("유형") == cat) for cat in KEYWORDS}
 
     stat_cards = ""
     for cat, cnt in counts.items():
@@ -244,15 +246,80 @@ def save_html(articles: list[dict], path: str):
           <div style="font-size:11px;color:{c['text']};margin-top:4px;">건</div>
         </div>"""
 
+    # ── 차트 데이터 계산 ──
+    cat_header_colors = {cat: CATEGORY_COLORS[cat]["header"] for cat in KEYWORDS}
+
+    # 1. 날짜별 유형별 추이
+    date_cat: dict = {}
+    for a in articles:
+        d = a["보도일"].strftime("%Y-%m-%d")
+        cat = a.get("유형", "")
+        date_cat.setdefault(d, {})
+        date_cat[d][cat] = date_cat[d].get(cat, 0) + 1
+    sorted_dates = sorted(date_cat.keys())
+    line_datasets = [
+        {
+            "label": cat,
+            "data": [date_cat.get(d, {}).get(cat, 0) for d in sorted_dates],
+            "borderColor": cat_header_colors[cat],
+            "backgroundColor": cat_header_colors[cat],
+            "tension": 0.3,
+            "fill": False,
+            "pointRadius": 3,
+        }
+        for cat in KEYWORDS
+    ]
+
+    # 2. 유형별 도넛
+    donut_labels = list(counts.keys())
+    donut_data   = list(counts.values())
+    donut_colors = [cat_header_colors[c] for c in donut_labels]
+
+    # 3. 언론사 TOP 10
+    press_counter = Counter(a.get("언론사", "") for a in articles if a.get("언론사", "").strip())
+    top_press     = press_counter.most_common(10)
+    press_labels  = [p[0] for p in top_press]
+    press_data    = [p[1] for p in top_press]
+
+    # 4. 제목 키워드 빈도 TOP 10
+    stop_words = {
+        "및", "등", "위해", "대한", "통해", "관련", "이후", "이번", "지난", "오는",
+        "대해", "있는", "하는", "으로", "에서", "로서", "부터", "까지", "하여",
+        "이를", "또한", "이에", "따라", "위한", "한국", "위해", "있어", "통한",
+        "대한민국", "있다", "않는", "없는", "되는", "하고", "하며",
+    }
+    word_counter = Counter()
+    for a in articles:
+        for w in re.findall(r"[가-힣]{2,}", a.get("기사제목", "")):
+            if w not in stop_words:
+                word_counter[w] += 1
+    top_words  = word_counter.most_common(10)
+    kw_labels  = [w[0] for w in top_words]
+    kw_data    = [w[1] for w in top_words]
+
+    # JSON 직렬화
+    j_dates          = json.dumps(sorted_dates,  ensure_ascii=False)
+    j_line_datasets  = json.dumps(line_datasets, ensure_ascii=False)
+    j_donut_labels   = json.dumps(donut_labels,  ensure_ascii=False)
+    j_donut_data     = json.dumps(donut_data)
+    j_donut_colors   = json.dumps(donut_colors)
+    j_press_labels   = json.dumps(press_labels,  ensure_ascii=False)
+    j_press_data     = json.dumps(press_data)
+    j_kw_labels      = json.dumps(kw_labels,     ensure_ascii=False)
+    j_kw_data        = json.dumps(kw_data)
+
+    # ── 기사 행 ──
     rows = ""
     for a in articles:
         pub: datetime = a["보도일"]
         cat = a.get("유형", "")
         c = CATEGORY_COLORS.get(cat, {"bg": "#ffffff", "text": "#333", "header": "#333"})
-        title = a.get("기사제목", "").replace("<", "&lt;").replace(">", "&gt;")
-        summary = a.get("요약", "").replace("<", "&lt;").replace(">", "&gt;")
-        press = a.get("언론사", "").replace("<", "&lt;").replace(">", "&gt;")
-        url = a.get("기사링크", "")
+        title   = a.get("기사제목", "").replace("<", "&lt;").replace(">", "&gt;")
+        summary = a.get("요약",     "").replace("<", "&lt;").replace(">", "&gt;")
+        press   = a.get("언론사",   "").replace("<", "&lt;").replace(">", "&gt;")
+        raw_url = a.get("기사링크", "")
+        m = re.search(r"/articles/([^?&]+)", raw_url)
+        url = f"https://news.google.com/articles/{m.group(1)}" if m else raw_url
         rows += f"""
         <tr style="background:{c['bg']};">
           <td style="white-space:nowrap;color:#555;font-size:12px;">{pub.strftime("%Y-%m-%d")}</td>
@@ -270,6 +337,7 @@ def save_html(articles: list[dict], path: str):
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>뉴스 모니터링 리포트</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
   body {{ font-family: 'Malgun Gothic', Arial, sans-serif; background: #f5f6fa; color: #333; }}
@@ -281,6 +349,10 @@ def save_html(articles: list[dict], path: str):
   .total-card {{ background: #fff; border-radius: 10px; padding: 16px 20px; min-width: 140px; flex: 1; border: 1px solid #e0e0e0; }}
   .total-card .label {{ font-size: 12px; color: #888; margin-bottom: 6px; }}
   .total-card .value {{ font-size: 28px; font-weight: 700; color: #1F4E79; }}
+  .charts-grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }}
+  .chart-card {{ background: #fff; border-radius: 12px; border: 1px solid #e0e0e0; padding: 20px; }}
+  .chart-card h3 {{ font-size: 13px; font-weight: 600; color: #555; margin-bottom: 14px; }}
+  .chart-card canvas {{ max-height: 260px; }}
   .table-wrap {{ background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #e0e0e0; }}
   table {{ width: 100%; border-collapse: collapse; font-size: 13px; }}
   thead tr {{ background: #1F4E79; }}
@@ -304,6 +376,26 @@ def save_html(articles: list[dict], path: str):
     </div>
     {stat_cards}
   </div>
+
+  <div class="charts-grid">
+    <div class="chart-card">
+      <h3>날짜별 유형별 기사 추이</h3>
+      <canvas id="chartLine"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>유형별 비율</h3>
+      <canvas id="chartDonut"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>언론사별 기사 수 (TOP 10)</h3>
+      <canvas id="chartPress"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>키워드 빈도 (TOP 10)</h3>
+      <canvas id="chartKeyword"></canvas>
+    </div>
+  </div>
+
   <div class="table-wrap">
     <table>
       <thead>
@@ -323,9 +415,82 @@ def save_html(articles: list[dict], path: str):
     </table>
   </div>
 </div>
+
+<script>
+(function() {{
+  // 1. 날짜별 유형별 꺾은선 차트
+  new Chart(document.getElementById('chartLine'), {{
+    type: 'line',
+    data: {{
+      labels: {j_dates},
+      datasets: {j_line_datasets}
+    }},
+    options: {{
+      responsive: true,
+      plugins: {{ legend: {{ position: 'bottom', labels: {{ font: {{ size: 11 }} }} }} }},
+      scales: {{
+        x: {{ ticks: {{ font: {{ size: 10 }}, maxRotation: 45 }} }},
+        y: {{ beginAtZero: true, ticks: {{ stepSize: 1, font: {{ size: 11 }} }} }}
+      }}
+    }}
+  }});
+
+  // 2. 유형별 도넛 차트
+  new Chart(document.getElementById('chartDonut'), {{
+    type: 'doughnut',
+    data: {{
+      labels: {j_donut_labels},
+      datasets: [{{ data: {j_donut_data}, backgroundColor: {j_donut_colors}, borderWidth: 2 }}]
+    }},
+    options: {{
+      responsive: true,
+      plugins: {{
+        legend: {{ position: 'bottom', labels: {{ font: {{ size: 11 }} }} }},
+        tooltip: {{ callbacks: {{ label: function(ctx) {{ return ctx.label + ': ' + ctx.parsed + '건'; }} }} }}
+      }}
+    }}
+  }});
+
+  // 3. 언론사 가로 막대 차트
+  new Chart(document.getElementById('chartPress'), {{
+    type: 'bar',
+    data: {{
+      labels: {j_press_labels},
+      datasets: [{{ label: '기사 수', data: {j_press_data}, backgroundColor: '#2E75B6', borderRadius: 4 }}]
+    }},
+    options: {{
+      indexAxis: 'y',
+      responsive: true,
+      plugins: {{ legend: {{ display: false }} }},
+      scales: {{
+        x: {{ beginAtZero: true, ticks: {{ stepSize: 1, font: {{ size: 11 }} }} }},
+        y: {{ ticks: {{ font: {{ size: 11 }} }} }}
+      }}
+    }}
+  }});
+
+  // 4. 키워드 빈도 막대 차트
+  new Chart(document.getElementById('chartKeyword'), {{
+    type: 'bar',
+    data: {{
+      labels: {j_kw_labels},
+      datasets: [{{ label: '빈도', data: {j_kw_data}, backgroundColor: '#2E8B57', borderRadius: 4 }}]
+    }},
+    options: {{
+      responsive: true,
+      plugins: {{ legend: {{ display: false }} }},
+      scales: {{
+        x: {{ ticks: {{ font: {{ size: 11 }} }} }},
+        y: {{ beginAtZero: true, ticks: {{ stepSize: 1, font: {{ size: 11 }} }} }}
+      }}
+    }}
+  }});
+}})();
+</script>
 </body>
 </html>"""
 
+    os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
         f.write(html)
     print(f"HTML 저장 완료: {path}")
