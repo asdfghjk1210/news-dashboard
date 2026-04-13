@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "News Pipeline",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["news_pipeline.py"],
+      "port": 0
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+name: 월간 뉴스 리포트
+
+on:
+  schedule:
+    - cron: '0 0 1 * *'   # 매월 1일 오전 9시 (한국시간)
+  workflow_dispatch:        # 수동 실행 버튼도 생성
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v3
+
+      - name: Python 설치
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: 패키지 설치
+        run: |
+          pip install feedparser requests beautifulsoup4 \
+                      openpyxl gnewsdecoder newspaper3k \
+                      lxml_html_clean
+
+      - name: 뉴스 파이프라인 실행
+        env:
+          MAIL_APP_PW: ${{ secrets.MAIL_APP_PW }}
+        run: python news_pipeline.py
+
+      - name: 결과물 커밋 & 푸시
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add docs/
+          git commit -m "월간 뉴스 리포트 자동 업데이트"
+          git push
