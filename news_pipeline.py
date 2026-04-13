@@ -119,15 +119,6 @@ SELECTORS = [
 
 def resolve_google_news_url(url: str) -> str:
     try:
-        from gnewsdecoder import new_decoderv1
-        result = new_decoderv1(url)
-        if result and result.get("status") == "OK":
-            decoded = result.get("decoded_url", "")
-            if decoded and "google.com" not in decoded:
-                return decoded
-    except Exception:
-        pass
-    try:
         clean = re.sub(r"\?.*$", "", url)
         clean = clean.replace("/rss/articles/", "/articles/")
         session = requests.Session()

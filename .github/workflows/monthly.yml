@@ -20,9 +20,7 @@ jobs:
 
       - name: 패키지 설치
         run: |
-          pip install feedparser requests beautifulsoup4 \
-                      openpyxl gnewsdecoder newspaper3k \
-                      lxml_html_clean
+          pip install feedparser requests beautifulsoup4 openpyxl newspaper3k lxml_html_clean
 
       - name: 뉴스 파이프라인 실행
         env:
