@@ -7,11 +7,6 @@ from bs4 import BeautifulSoup
 from datetime import datetime, timedelta, timezone
 import openpyxl
 from openpyxl.styles import Font, PatternFill, Alignment
-import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from email.mime.base import MIMEBase
-from email import encoders
 import urllib.parse
 import time
 import os
@@ -20,18 +15,8 @@ import re
 # ─────────────────────────────────────
 # ★ 설정
 # ─────────────────────────────────────
-SMTP_HOST   = "smtp.mailplug.co.kr"
-SMTP_PORT   = 465
-MAIL_USER   = "jsjang@suwon.re.kr"
-MAIL_APP_PW = "9osUB*1AjYKD%-lpkn<O"
-RECIPIENTS  = [
-    "jsjang@suwon.re.kr",
-    "jwlee@suwon.re.kr",
-    "tw.kang@suwon.re.kr",
-    "jineon@suwon.re.kr",
-]
-OUTPUT_XLSX = r"C:\news_pipeline\news_result.xlsx"
-OUTPUT_HTML = r"C:\news_pipeline\docs\index.html"
+OUTPUT_XLSX = "news_result.xlsx"
+OUTPUT_HTML = "docs/index.html"
 DAYS_RANGE  = 30
 
 KEYWORDS = {
@@ -347,44 +332,8 @@ def save_html(articles: list[dict], path: str):
 
 
 # ─────────────────────────────────────
-# 5. 메일 발송 (엑셀 + HTML 첨부)
+# 5. 완료
 # ─────────────────────────────────────
-def send_email(xlsx_path: str, html_path: str, article_count: int):
-    now_str = datetime.now().strftime("%Y년 %m월")
-    msg = MIMEMultipart()
-    msg["From"]    = MAIL_USER
-    msg["To"]      = ", ".join(RECIPIENTS)
-    msg["Subject"] = f"[뉴스 자동 리포트] {now_str} ({article_count}건)"
-
-    body = f"""{now_str} 뉴스 모니터링 리포트입니다.
-총 {article_count}건의 기사가 수집되었습니다.
-
-수집 키워드 분류
-  - 관광 및 K-컬처: K-컬처, K-culture, K-푸드, K-food, K-POP, 한류
-  - 혁신산업: 바이오, 반도체, AI, 인공지능
-  - 경제자유구역: 경제자유구역, 경자특구, 경자구역
-  - 수원시 관련: 수원시, 수원특례시
-
-대시보드 URL: https://asdfghjk1210.github.io/news-dashboard
-
-첨부 파일:
-  - news_result.xlsx (엑셀)
-  - news_result.html (대시보드 - 브라우저에서 열기)
-"""
-    msg.attach(MIMEText(body, "plain", "utf-8"))
-
-    for filepath, filename in [(xlsx_path, "news_result.xlsx"), (html_path, "news_result.html")]:
-        with open(filepath, "rb") as f:
-            part = MIMEBase("application", "octet-stream")
-            part.set_payload(f.read())
-            encoders.encode_base64(part)
-            part.add_header("Content-Disposition", f'attachment; filename="{filename}"')
-            msg.attach(part)
-
-    with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT) as server:
-        server.login(MAIL_USER, MAIL_APP_PW)
-        server.sendmail(MAIL_USER, RECIPIENTS, msg.as_string())
-    print(f"메일 발송 완료: {RECIPIENTS}")
 
 
 # ─────────────────────────────────────
@@ -414,9 +363,6 @@ if __name__ == "__main__":
 
     print("\n[4/5] HTML 대시보드 생성 중...")
     save_html(articles, OUTPUT_HTML)
-
-    print("\n[5/5] 메일 발송 중...")
-    send_email(OUTPUT_XLSX, OUTPUT_HTML, len(articles))
 
     print("\n" + "=" * 50)
     print("전체 파이프라인 완료!")
