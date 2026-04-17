@@ -1,7 +1,11 @@
 # news_pipeline.py
 import sys
+import os
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
-import anthropic
+if os.environ.get("ANTHROPIC_API_KEY", ""):
+    import anthropic
+else:
+    anthropic = None
 import feedparser
 import requests
 from bs4 import BeautifulSoup
@@ -10,7 +14,6 @@ import openpyxl
 from openpyxl.styles import Font, PatternFill, Alignment
 import urllib.parse
 import time
-import os
 import re
 
 # ─────────────────────────────────────
