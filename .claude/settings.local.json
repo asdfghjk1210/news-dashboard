@@ -6,7 +6,8 @@
       "Bash(pip install:*)",
       "Bash(python -c \"import gnewsdecoder; print\\('ok'\\)\")",
       "Bash(python -X utf8 news_pipeline.py)",
-      "Bash(python -X utf8 -c ':*)"
+      "Bash(python -X utf8 -c ':*)",
+      "Bash(python -m py_compile \"C:/news_pipeline/market_pipeline.py.txt\")"
     ]
   }
 }

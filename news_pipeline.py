@@ -1,6 +1,7 @@
 # news_pipeline.py
 import sys
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+import anthropic
 import feedparser
 import requests
 from bs4 import BeautifulSoup
@@ -15,6 +16,7 @@ import re
 # ─────────────────────────────────────
 # ★ 설정
 # ─────────────────────────────────────
+ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
 OUTPUT_XLSX = "news_result.xlsx"
 OUTPUT_HTML = "docs/index.html"
 DAYS_RANGE  = 30
@@ -163,9 +165,7 @@ def get_article_content(url: str) -> str:
         return "본문 수집 실패"
 
 
-def make_summary(text: str, max_chars: int = 200) -> str:
-    if not text or text == "본문 수집 실패":
-        return ""
+def _fallback_summary(text: str, max_chars: int = 200) -> str:
     sentences = re.split(r"(?<=[.!?。])\s+", text)
     summary = ""
     for s in sentences:
@@ -174,6 +174,25 @@ def make_summary(text: str, max_chars: int = 200) -> str:
         else:
             break
     return summary.strip() if summary else text[:max_chars] + "..."
+
+
+def make_summary(text: str, title: str = "", max_chars: int = 200) -> str:
+    source = text if (text and text != "본문 수집 실패") else title
+    if not source:
+        return ""
+    if not ANTHROPIC_API_KEY:
+        return _fallback_summary(source, max_chars)
+    try:
+        client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
+        prompt = f"다음 내용을 2~3문장으로 한국어 요약해줘. 요약문만 출력해.\n\n{source[:3000]}"
+        msg = client.messages.create(
+            model="claude-haiku-4-5-20251001",
+            max_tokens=300,
+            messages=[{"role": "user", "content": prompt}],
+        )
+        return msg.content[0].text.strip()
+    except Exception:
+        return _fallback_summary(source, max_chars)
 
 
 # ─────────────────────────────────────
@@ -517,7 +536,7 @@ if __name__ == "__main__":
         print(f"  ({i+1}/{len(articles)}) {a['기사제목'][:30]}...", flush=True)
         content = get_article_content(a["기사링크"])
         a["본문"] = content
-        a["요약"] = make_summary(content)
+        a["요약"] = make_summary(content, title=a.get("기사제목", ""))
         time.sleep(0.3)
 
     success = sum(1 for a in articles if a["본문"] != "본문 수집 실패")

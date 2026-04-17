@@ -20,12 +20,14 @@ jobs:
 
       - name: 패키지 설치
         run: |
-          pip install feedparser requests beautifulsoup4 openpyxl newspaper3k lxml_html_clean
+          pip install feedparser requests beautifulsoup4 openpyxl newspaper3k lxml_html_clean yfinance pandas python-dateutil
 
       - name: 뉴스 파이프라인 실행
         env:
           MAIL_APP_PW: ${{ secrets.MAIL_APP_PW }}
-        run: python news_pipeline.py
+        run: |
+          python news_pipeline.py
+          python market_pipeline.py
 
       - name: 결과물 커밋 & 푸시
         run: |
