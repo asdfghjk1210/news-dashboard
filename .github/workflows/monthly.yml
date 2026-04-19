@@ -32,6 +32,6 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add docs/
+          git add news_dashboard/docs/
           git commit -m "월간 뉴스 리포트 자동 업데이트"
           git push
