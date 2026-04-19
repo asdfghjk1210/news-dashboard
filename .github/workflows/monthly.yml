@@ -26,7 +26,7 @@ jobs:
         env:
           MAIL_APP_PW: ${{ secrets.MAIL_APP_PW }}
         run: |
-           python news_dashboard.py
+           cd news_dashboard && python news_dashboard.py
 
       - name: 결과물 커밋 & 푸시
         run: |
