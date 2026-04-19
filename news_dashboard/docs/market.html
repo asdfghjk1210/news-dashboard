@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>수원시 구별 중동 상황 및 분석 대시보드</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:#f0f2f5;color:#1e293b}
+  .wrap{max-width:1400px;margin:0 auto;padding:10px}
+  /* 헤더 */
+  .main-hdr{background:#1e3a8a;color:white;padding:10px 16px;border-radius:10px 10px 0 0;display:flex;justify-content:space-between;align-items:center;margin-bottom:0}
+  .main-hdr h1{font-size:15px;font-weight:500}
+  .main-hdr .ts{font-size:10px;opacity:.75}
+  /* 탭 네비 */
+  .nav-tabs{background:#1e40af;display:flex;gap:2px;padding:0 16px}
+  .nav-tabs a{color:rgba(255,255,255,.7);text-decoration:none;padding:7px 14px;font-size:11px;border-bottom:2px solid transparent}
+  .nav-tabs a:hover,.nav-tabs a.active{color:white;border-bottom:2px solid white}
+  /* 그리드 */
+  .row{display:grid;gap:8px;margin-bottom:8px}
+  .r3{grid-template-columns:1.1fr 1.6fr 1.3fr}
+  .r2{grid-template-columns:1fr 1fr}
+  .r3b{grid-template-columns:1fr 1fr 1fr}
+  /* 카드 */
+  .card{background:white;border-radius:8px;border:0.5px solid #e2e8f0;padding:10px;overflow:hidden}
+  .card-hdr{font-size:11px;font-weight:500;color:#1e3a8a;border-bottom:1px solid #e2e8f0;padding-bottom:6px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+  /* 섹션 (어두운 헤더) */
+  .sec-wrap{border-radius:8px;overflow:hidden;border:0.5px solid #e2e8f0}
+  .sec-hdr{background:#1e3a8a;color:white;padding:7px 12px;font-size:11px;font-weight:500;display:flex;justify-content:space-between;align-items:center}
+  .sec-body{background:white;padding:10px}
+  /* 유튜브 탭 */
+  .ytbtn{padding:3px 9px;border:0.5px solid #cbd5e1;background:white;border-radius:4px;font-size:9.5px;cursor:pointer;color:#475569;margin-right:3px;margin-bottom:4px}
+  .ytbtn.active{background:#1e3a8a;color:white;border-color:#1e3a8a}
+  /* 뉴스 테이블 */
+  table{width:100%;border-collapse:collapse;font-size:10px}
+  th{background:#1e3a8a;color:white;padding:6px 8px;text-align:left;font-weight:500}
+  td{padding:5px 8px;border-bottom:0.5px solid #f1f5f9;vertical-align:middle}
+  tr:hover td{background:#f8fafc}
+  /* 버튼 */
+  .dl-btn{background:#10b981;color:white;padding:4px 12px;border-radius:4px;border:none;font-size:10px;cursor:pointer;font-weight:500;text-decoration:none;display:inline-block}
+  .chart-wrap{height:200px;position:relative}
+  /* 반응형 */
+  @media(max-width:900px){.r3,.r3b{grid-template-columns:1fr}.r2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ▌헤더 -->
+  <div class="main-hdr">
+    <h1>📈 수원시 구별 중동 상황 및 분석 대시보드</h1>
+    <span class="ts">마지막 업데이트: 2026-04-19 18:50 KST</span>
+  </div>
+  <div class="nav-tabs">
+    <a href="#" class="active">Overview</a>
+    <a href="#">Intables</a>
+    <a href="#">Githuns</a>
+    <a href="#">Preccity</a>
+    <a href="#">Carinsights</a>
+  </div>
+
+  <div style="height:8px"></div>
+
+  <!-- ▌상단 3열 -->
+  <div class="row r3">
+
+    <!-- 좌: 수원시 구별 상황 유형 -->
+    <div class="card">
+      <div class="card-hdr">
+        수원시 구별 상황 유형
+        <span style="font-size:9px;color:#64748b">RSS 자동 분류</span>
+      </div>
+      
+        <div style="border-left:3px solid #3b82f6;padding:4px 8px;margin-bottom:6px;background:#fafafa;border-radius:0 4px 4px 0">
+          <div style="font-size:11px;font-weight:500;color:#1e40af;margin-bottom:4px">팔달구</div>
+          <div style="margin-bottom:4px"><span style="font-size:9px;font-weight:500;color:#3b82f6;margin-right:4px">[에너지/공급]</span><br><span style="font-size:9.5px;color:#475569">· (수집된 구별 기사 없음 — 전체 시 공통 동향 적용)</span></div><div style="margin-bottom:4px"><span style="font-size:9px;font-weight:500;color:#3b82f6;margin-right:4px">[시장/금융]</span><br><span style="font-size:9.5px;color:#475569">· 뉴욕·상하이 증시, 美 워시 청문회·中 기준금리 '촉각' - 한…</span></div><div style="margin-bottom:4px"><span style="font-size:9px;font-weight:500;color:#3b82f6;margin-right:4px">[에너지/인프라]</span><br><span style="font-size:9.5px;color:#475569">· 칠곡군, 공공부문 에너지 절감 총력 - 프레스뉴스…</span></div>
+        </div>
+        <div style="border-left:3px solid #10b981;padding:4px 8px;margin-bottom:6px;background:#fafafa;border-radius:0 4px 4px 0">
+          <div style="font-size:11px;font-weight:500;color:#065f46;margin-bottom:4px">장안구</div>
+          <div style="margin-bottom:4px"><span style="font-size:9px;font-weight:500;color:#10b981;margin-right:4px">[에너지/공급]</span><br><span style="font-size:9.5px;color:#475569">· 중동 리스크 속 해법 모색…에너지안보환경협회, 콜로키엄 개최 -…</span></div><div style="margin-bottom:4px"><span style="font-size:9px;font-weight:500;color:#10b981;margin-right:4px">[시장/금융]</span><br><span style="font-size:9.5px;color:#475569">· 뉴욕·상하이 증시, 美 워시 청문회·中 기준금리 '촉각' - 한…</span></div><div style="margin-bottom:4px"><span style="font-size:9px;font-weight:500;color:#10b981;margin-right:4px">[에너지/인프라]</span><br><span style="font-size:9.5px;color:#475569">· 칠곡군, 공공부문 에너지 절감 총력 - 프레스뉴스…</span></div>
+        </div>
+        <div style="border-left:3px solid #f59e0b;padding:4px 8px;margin-bottom:6px;background:#fafafa;border-radius:0 4px 4px 0">
+          <div style="font-size:11px;font-weight:500;color:#92400e;margin-bottom:4px">영통구</div>
+          <div style="margin-bottom:4px"><span style="font-size:9px;font-weight:500;color:#f59e0b;margin-right:4px">[시장/금융]</span><br><span style="font-size:9.5px;color:#475569">· "삼성, 더운 물은 시간제 사용"… 물가 25% 올랐던 70년대…</span></div><div style="margin-bottom:4px"><span style="font-size:9px;font-weight:500;color:#f59e0b;margin-right:4px">[에너지/공급]</span><br><span style="font-size:9.5px;color:#475569">· 중동 리스크 속 해법 모색…에너지안보환경협회, 콜로키엄 개최 -…</span></div><div style="margin-bottom:4px"><span style="font-size:9px;font-weight:500;color:#f59e0b;margin-right:4px">[에너지/인프라]</span><br><span style="font-size:9.5px;color:#475569">· 칠곡군, 공공부문 에너지 절감 총력 - 프레스뉴스…</span></div>
+        </div>
+        <div style="border-left:3px solid #ef4444;padding:4px 8px;margin-bottom:6px;background:#fafafa;border-radius:0 4px 4px 0">
+          <div style="font-size:11px;font-weight:500;color:#991b1b;margin-bottom:4px">권선구</div>
+          <div style="margin-bottom:4px"><span style="font-size:9px;font-weight:500;color:#ef4444;margin-right:4px">[에너지/공급]</span><br><span style="font-size:9.5px;color:#475569">· 중동전쟁 영향에 2분기 제조업 경기 둔화 전망 - 서울경제TV</span></div><div style="margin-bottom:4px"><span style="font-size:9px;font-weight:500;color:#ef4444;margin-right:4px">[에너지/인프라]</span><br><span style="font-size:9.5px;color:#475569">· 춘천도시공사-한국에너지공단 강원지역본부, 에너지 절약 홍보캠페인…</span></div>
+        </div>
+    </div>
+
+    <!-- 중: 주간 키워드 검색량 + 경제 지표 -->
+    <div class="card">
+      <div class="card-hdr">주간 유형별 키워드 검색량 (뉴스 카운팅 기반)</div>
+      <div class="chart-wrap" style="height:160px"><canvas id="kwChart"></canvas></div>
+      <div style="margin-top:8px">
+        <div class="card-hdr" style="margin-top:6px">주요 경제 지표 (USD/KRW · WTI · 금값)</div>
+        <div class="chart-wrap" style="height:160px"><canvas id="econChart"></canvas></div>
+      </div>
+    </div>
+
+    <!-- 우: 전문가 채널 브리핑 -->
+    <div class="card">
+      <div class="card-hdr">전문가 채널 브리핑</div>
+      <div style="margin-bottom:6px"><button class="ytbtn active" onclick="openTab(event,'yt0')">경제·금융 지식</button><button class="ytbtn " onclick="openTab(event,'yt1')">주식 및 테크</button><button class="ytbtn " onclick="openTab(event,'yt2')">자산 및 금리</button><button class="ytbtn " onclick="openTab(event,'yt3')">핵심 브리핑</button></div>
+      <div id="yt0" style="display:block">
+            <div style="display:flex;align-items:center;gap:6px;padding:5px 6px;background:#f8fafc;border-radius:4px;border:0.5px solid #e2e8f0;margin-bottom:4px">
+              <iframe width="80" height="50" src="https://www.youtube.com/embed?listType=user_uploads&list=UCsJ6RuBiTVWRX156FVbeaGg" 
+                frameborder="0" allowfullscreen style="border-radius:3px;flex-shrink:0"></iframe>
+              <div>
+                <div style="font-size:10px;font-weight:500;color:#1e40af">슈카월드</div>
+                <div style="font-size:9px;color:#64748b;line-height:1.4">중동 사태, 국제 유가 전망·시장 금융 영향 분석</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;padding:5px 6px;background:#f8fafc;border-radius:4px;border:0.5px solid #e2e8f0;margin-bottom:4px">
+              <iframe width="80" height="50" src="https://www.youtube.com/embed?listType=user_uploads&list=UChlv4GSd7OQl3js-jkLOnFA" 
+                frameborder="0" allowfullscreen style="border-radius:3px;flex-shrink:0"></iframe>
+              <div>
+                <div style="font-size:10px;font-weight:500;color:#1e40af">삼프로TV</div>
+                <div style="font-size:9px;color:#64748b;line-height:1.4">금리/환율, 개인 투자 전략·부동산 시장 대응</div>
+              </div>
+            </div></div><div id="yt1" style="display:none">
+            <div style="display:flex;align-items:center;gap:6px;padding:5px 6px;background:#f8fafc;border-radius:4px;border:0.5px solid #e2e8f0;margin-bottom:4px">
+              <iframe width="80" height="50" src="https://www.youtube.com/embed?listType=user_uploads&list=UCDnIfMiHBNs1RP7y6B6wf1Q" 
+                frameborder="0" allowfullscreen style="border-radius:3px;flex-shrink:0"></iframe>
+              <div>
+                <div style="font-size:10px;font-weight:500;color:#1e40af">염블리(염승환)</div>
+                <div style="font-size:9px;color:#64748b;line-height:1.4">국내외 주식 종목 분석·투자 전략</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;padding:5px 6px;background:#f8fafc;border-radius:4px;border:0.5px solid #e2e8f0;margin-bottom:4px">
+              <iframe width="80" height="50" src="https://www.youtube.com/embed?listType=user_uploads&list=UCDSj40X9FFUAnx1nv7gQhcA" 
+                frameborder="0" allowfullscreen style="border-radius:3px;flex-shrink:0"></iframe>
+              <div>
+                <div style="font-size:10px;font-weight:500;color:#1e40af">월급쟁이 부자들</div>
+                <div style="font-size:9px;color:#64748b;line-height:1.4">자산 형성 전략·부동산 투자 대응</div>
+              </div>
+            </div></div><div id="yt2" style="display:none">
+            <div style="display:flex;align-items:center;gap:6px;padding:5px 6px;background:#f8fafc;border-radius:4px;border:0.5px solid #e2e8f0;margin-bottom:4px">
+              <iframe width="80" height="50" src="https://www.youtube.com/embed?listType=user_uploads&list=UCxvdCnvGODDyuvnELnLkQWw" 
+                frameborder="0" allowfullscreen style="border-radius:3px;flex-shrink:0"></iframe>
+              <div>
+                <div style="font-size:10px;font-weight:500;color:#1e40af">이효석의 입풀</div>
+                <div style="font-size:9px;color:#64748b;line-height:1.4">금리 동향·자산 시장 구조 분석</div>
+              </div>
+            </div></div><div id="yt3" style="display:none">
+            <div style="display:flex;align-items:center;gap:6px;padding:5px 6px;background:#f8fafc;border-radius:4px;border:0.5px solid #e2e8f0;margin-bottom:4px">
+              <iframe width="80" height="50" src="https://www.youtube.com/embed?listType=user_uploads&list=UCC3yfxS5qC6PCwDzetUuEWg" 
+                frameborder="0" allowfullscreen style="border-radius:3px;flex-shrink:0"></iframe>
+              <div>
+                <div style="font-size:10px;font-weight:500;color:#1e40af">소수몽키</div>
+                <div style="font-size:9px;color:#64748b;line-height:1.4">모든 만에 보는 핵심 이슈·주간 경제 동향</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;padding:5px 6px;background:#f8fafc;border-radius:4px;border:0.5px solid #e2e8f0;margin-bottom:4px">
+              <iframe width="80" height="50" src="https://www.youtube.com/embed?listType=user_uploads&list=UCuPWXwE1pnjhNIZ2AStzOVA" 
+                frameborder="0" allowfullscreen style="border-radius:3px;flex-shrink:0"></iframe>
+              <div>
+                <div style="font-size:10px;font-weight:500;color:#1e40af">경제갤러리</div>
+                <div style="font-size:9px;color:#64748b;line-height:1.4">시장 갤러리 브리핑·투자자 심리 분석</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;padding:5px 6px;background:#f8fafc;border-radius:4px;border:0.5px solid #e2e8f0;margin-bottom:4px">
+              <iframe width="80" height="50" src="https://www.youtube.com/embed?listType=user_uploads&list=UCaLsqraxQaaRfm7HyT1x6ug" 
+                frameborder="0" allowfullscreen style="border-radius:3px;flex-shrink:0"></iframe>
+              <div>
+                <div style="font-size:10px;font-weight:500;color:#1e40af">유쾌한경제학</div>
+                <div style="font-size:9px;color:#64748b;line-height:1.4">쉽게 읽는 경제 뉴스·정책 해설</div>
+              </div>
+            </div></div>
+    </div>
+
+  </div>
+
+  <!-- ▌중단 2열 (종합 현황 + 다각도 대응) -->
+  <div class="row r2">
+
+    <!-- 종합 상황 및 정책 제안 -->
+    <div class="sec-wrap">
+      <div class="sec-hdr">
+        종합 상황 및 정책 제안
+        <a href="news_result.xlsx" class="dl-btn">종합 보고서 (xlsx) 다운로드</a>
+      </div>
+      <div class="sec-body">
+        <div style="font-size:10px;font-weight:500;color:#374151;margin-bottom:6px">▶ 수원시 도 &gt; 종합 현황 및 문제점 (RSS 자동 집계)</div>
+        <div style="margin-bottom:4px;font-size:10px;color:#374151">· [기타] 관련 기사 <strong>92건</strong> — 주요 이슈 집중 모니터링 필요</div><div style="margin-bottom:4px;font-size:10px;color:#374151">· [에너지/공급] 관련 기사 <strong>50건</strong> — 주요 이슈 집중 모니터링 필요</div><div style="margin-bottom:4px;font-size:10px;color:#374151">· [에너지/인프라] 관련 기사 <strong>31건</strong> — 주요 이슈 집중 모니터링 필요</div>
+        <div style="font-size:10px;font-weight:500;color:#374151;margin:10px 0 6px">▶ 통합 대응 정책 제안 (기사 기반 자동 요약)</div>
+        
+        <div style="border-left:3px solid #10b981;padding:4px 8px;margin-bottom:6px">
+          <div style="font-size:10px;font-weight:500;color:#065f46;margin-bottom:2px">[에너지]</div>
+          <div style="font-size:9px;color:#475569;line-height:1.5">· 중동 리스크 속 해법 모색…에너지안보환경협회, 콜로키엄 개최 - 뉴스1…</div><div style="font-size:9px;color:#475569;line-height:1.5">· ‘에너지 안보’와 ‘탄소중립’ 두 토끼 잡는다… 남부발전, 온실가스 감축…</div>
+        </div>
+        <div style="border-left:3px solid #3b82f6;padding:4px 8px;margin-bottom:6px">
+          <div style="font-size:10px;font-weight:500;color:#1e40af;margin-bottom:2px">[민생]</div>
+          <div style="font-size:9px;color:#94a3b8">수집된 기사 없음</div>
+        </div>
+        <div style="border-left:3px solid #f59e0b;padding:4px 8px;margin-bottom:6px">
+          <div style="font-size:10px;font-weight:500;color:#92400e;margin-bottom:2px">[산업]</div>
+          <div style="font-size:9px;color:#475569;line-height:1.5">· 뉴욕·상하이 증시, 美 워시 청문회·中 기준금리 '촉각' - 한국경제…</div><div style="font-size:9px;color:#475569;line-height:1.5">· 고유가, ‘근원물가’ 자극할라…한번 올라가면 안 떨어져 - 한겨레…</div>
+        </div>
+        <div style="border-left:3px solid #8b5cf6;padding:4px 8px;margin-bottom:6px">
+          <div style="font-size:10px;font-weight:500;color:#5b21b6;margin-bottom:2px">[정책]</div>
+          <div style="font-size:9px;color:#94a3b8">수집된 기사 없음</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 다각도 대응 현황 -->
+    <div class="sec-wrap">
+      <div class="sec-hdr">다각도 상황 및 대응 현황</div>
+      <div class="sec-body">
+        <div class="row r3b">
+          <div>
+            <div style="font-size:10px;font-weight:500;color:#1e40af;border-bottom:1px solid #e2e8f0;padding-bottom:4px;margin-bottom:6px">국외 현황</div>
+            <div style="font-size:9px;background:#eff6ff;border-left:2px solid #3b82f6;padding:3px 6px;margin-bottom:3px;border-radius:0 3px 3px 0"><a href="https://www.aljazeera.com/news/2026/4/19/iran-war-what-is-happening-on-day-51-of-the-us-iran-conflict?traffic_source=rss" target="_blank" style="color:#1e40af;text-decoration:none">Iran war: What is happening on day 51 …</a></div><div style="font-size:9px;background:#eff6ff;border-left:2px solid #3b82f6;padding:3px 6px;margin-bottom:3px;border-radius:0 3px 3px 0"><a href="https://www.aljazeera.com/video/by-the-numbers-3/2026/4/19/how-the-israeli-military-targets-the-people-who-save-lives?traffic_source=rss" target="_blank" style="color:#1e40af;text-decoration:none">How the Israeli military targets the p…</a></div><div style="font-size:9px;background:#eff6ff;border-left:2px solid #3b82f6;padding:3px 6px;margin-bottom:3px;border-radius:0 3px 3px 0"><a href="https://tass.com/world/2119273" target="_blank" style="color:#1e40af;text-decoration:none">Israeli army announces death of anothe…</a></div><div style="font-size:9px;background:#eff6ff;border-left:2px solid #3b82f6;padding:3px 6px;margin-bottom:3px;border-radius:0 3px 3px 0"><a href="https://tass.com/world/2119271" target="_blank" style="color:#1e40af;text-decoration:none">Iran war Trump’s ‘feeble attempt’ to d…</a></div><div style="font-size:9px;background:#eff6ff;border-left:2px solid #3b82f6;padding:3px 6px;margin-bottom:3px;border-radius:0 3px 3px 0"><a href="https://www.aljazeera.com/news/2026/4/19/iran-us-still-far-from-breakthrough-in-strait-of-hormuz-impasse?traffic_source=rss" target="_blank" style="color:#1e40af;text-decoration:none">Iran, US still ‘far’ from breakthrough…</a></div><div style="font-size:9px;background:#eff6ff;border-left:2px solid #3b82f6;padding:3px 6px;margin-bottom:3px;border-radius:0 3px 3px 0"><a href="https://www.bbc.com/news/videos/cz0e54yrppno?at_medium=RSS&at_campaign=rss" target="_blank" style="color:#1e40af;text-decoration:none">Watch: Runners v robots at China half …</a></div>
+          </div>
+          <div>
+            <div style="font-size:10px;font-weight:500;color:#065f46;border-bottom:1px solid #e2e8f0;padding-bottom:4px;margin-bottom:6px">국내 현황</div>
+            <div style="font-size:9px;background:#f0fdf4;border-left:2px solid #10b981;padding:3px 6px;margin-bottom:3px;border-radius:0 3px 3px 0"><a href="https://news.google.com/rss/articles/CBMiYkFVX3lxTE1lNllXWWY2dzBfejZqZGtncUxTaEN5VUN0QWh4b2xhVUZEYkY0TElrX3hIV0NVRktQc2V1VGNxTEtxdmdFY0w5YlhTUXRtcm9jN2laMm5neHJRRFE3SDZuZnlB?oc=5" target="_blank" style="color:#065f46;text-decoration:none">중동 리스크 속 해법 모색…에너지안보환경협회, 콜로키엄 개최 - 뉴스…</a></div><div style="font-size:9px;background:#f0fdf4;border-left:2px solid #10b981;padding:3px 6px;margin-bottom:3px;border-radius:0 3px 3px 0"><a href="https://news.google.com/rss/articles/CBMiiwFBVV95cUxQbzhEYV9SZWxwSngwNEJOT1h3Sngzd1ZQb1RGOFFhVjllcUEtY2hvNjVRX2xnTHZvMmZrdi1ISEtKMl9nclBXMlE5RFFVQUg1alo5Q0x5ZWE3M1VpQkw2SGhXaUpiS0c1YkZ1S2RzSlh5ZjhpT2V4M1g3V2xnbnFOZkx5VWIwNURxMVZn?oc=5" target="_blank" style="color:#065f46;text-decoration:none">‘에너지 안보’와 ‘탄소중립’ 두 토끼 잡는다… 남부발전, 온실가스 …</a></div><div style="font-size:9px;background:#f0fdf4;border-left:2px solid #10b981;padding:3px 6px;margin-bottom:3px;border-radius:0 3px 3px 0"><a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTE1zaXFqalJURThPNXJwZ3I4cWxrLVdCMmdQXzFHdmdaYTVpdDF0cGhqa3JBVHRkYk9RLUE0QnZWb0piM2pSU0FFNWhtbkVNckdmUWEtNlJhWjN6UQ?oc=5" target="_blank" style="color:#065f46;text-decoration:none">수입물가 급등···고물가와의 전쟁 대비해야 - 경북매일</a></div><div style="font-size:9px;background:#f0fdf4;border-left:2px solid #10b981;padding:3px 6px;margin-bottom:3px;border-radius:0 3px 3px 0"><a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTE15UFVSSUZQa3lQRVFELUZsaGZFZGN2b2UtSmZ3aGV3bUpqV3I4a3EwV08wOUdJU3BuUVpFYWp3TW1ZSFRBcS1rdF9EeFE4M3BYQW1vNlpza0xsd9IBVEFVX3lxTE85bGhJTl9tYlQ3TXJCZ0pNclRsUHlyYkJ6UmVfeGxPQU5xcGJUNUc0bUtHZ2xKWC1EcHR4bFczTGJQN3JvOHNTWEJINkk1bUhGUGlobw?oc=5" target="_blank" style="color:#065f46;text-decoration:none">'3000만원짜리' 자폭드론 개발 경쟁…중동戰 활약에 프랑스·일본도 …</a></div><div style="font-size:9px;background:#f0fdf4;border-left:2px solid #10b981;padding:3px 6px;margin-bottom:3px;border-radius:0 3px 3px 0"><a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTFBfSHk2R29oTEk3VWhHdDdTNzJrS01hYVFGSFJ0Wk0xYTcwazFBblMtVURISW9SZTlyQUVxMW5LY1RBbEJGbVFkYUcwNFl2eVlfUDdwN2V1VHJ0UdIBVEFVX3lxTE0yMDJ2WEg4RUVCSlhCOU8yOWZoeE5uNlZPeEtWNGNwaUxLT1lDRnh2aWU4TDc0bTNIZndmTUxiZTRKYUY3WUVKNFF1b3F0eDBibjF3Qw?oc=5" target="_blank" style="color:#065f46;text-decoration:none">'중동전쟁 악재' 속 韓경제 1분기 성장률은 - 한국경제</a></div><div style="font-size:9px;background:#f0fdf4;border-left:2px solid #10b981;padding:3px 6px;margin-bottom:3px;border-radius:0 3px 3px 0"><a href="https://news.google.com/rss/articles/CBMiT0FVX3lxTE0wZ3B2RC0tak5VYnkycmY0d2F3UUptUWVkdHp4T0FSakNTOG9Sd0tBa25ucVNJUFhBTEkwY2xhVUhlNGRuRy03Rm1ob3pNMVU?oc=5" target="_blank" style="color:#065f46;text-decoration:none">최지영 IMF 이사 "중동 전쟁에 한국 성장률 전망 낮춰" - v.d…</a></div>
+          </div>
+          <div>
+            <div style="font-size:10px;font-weight:500;color:#92400e;border-bottom:1px solid #e2e8f0;padding-bottom:4px;margin-bottom:6px">실시간 Top 5</div>
+            <ol style="padding-left:12px"><li style="margin-bottom:5px;font-size:11px"><span style="background:#ef4444;color:white;padding:1px 5px;border-radius:3px;font-size:9px;margin-right:4px">Google_KR</span><a href="https://news.google.com/rss/articles/CBMiYkFVX3lxTE1lNllXWWY2dzBfejZqZGtncUxTaEN5VUN0QWh4b2xhVUZEYkY0TElrX3hIV0NVRktQc2V1VGNxTEtxdmdFY0w5YlhTUXRtcm9jN2laMm5neHJRRFE3SDZuZnlB?oc=5" target="_blank" style="color:#1e40af;text-decoration:none">중동 리스크 속 해법 모색…에너지안보환경협회, 콜로키엄 개최 - 뉴스1</a></li><li style="margin-bottom:5px;font-size:11px"><span style="background:#ef4444;color:white;padding:1px 5px;border-radius:3px;font-size:9px;margin-right:4px">Al Jazeera</span><a href="https://www.aljazeera.com/news/2026/4/19/iran-war-what-is-happening-on-day-51-of-the-us-iran-conflict?traffic_source=rss" target="_blank" style="color:#1e40af;text-decoration:none">Iran war: What is happening on day 51 of the US-Iran conflic…</a></li><li style="margin-bottom:5px;font-size:11px"><span style="background:#ef4444;color:white;padding:1px 5px;border-radius:3px;font-size:9px;margin-right:4px">Google_KR</span><a href="https://news.google.com/rss/articles/CBMiiwFBVV95cUxQbzhEYV9SZWxwSngwNEJOT1h3Sngzd1ZQb1RGOFFhVjllcUEtY2hvNjVRX2xnTHZvMmZrdi1ISEtKMl9nclBXMlE5RFFVQUg1alo5Q0x5ZWE3M1VpQkw2SGhXaUpiS0c1YkZ1S2RzSlh5ZjhpT2V4M1g3V2xnbnFOZkx5VWIwNURxMVZn?oc=5" target="_blank" style="color:#1e40af;text-decoration:none">‘에너지 안보’와 ‘탄소중립’ 두 토끼 잡는다… 남부발전, 온실가스 감축 목표 전격 상향 - 글로벌이코노믹</a></li><li style="margin-bottom:5px;font-size:11px"><span style="background:#ef4444;color:white;padding:1px 5px;border-radius:3px;font-size:9px;margin-right:4px">Al Jazeera</span><a href="https://www.aljazeera.com/video/by-the-numbers-3/2026/4/19/how-the-israeli-military-targets-the-people-who-save-lives?traffic_source=rss" target="_blank" style="color:#1e40af;text-decoration:none">How the Israeli military targets the people who save lives</a></li><li style="margin-bottom:5px;font-size:11px"><span style="background:#ef4444;color:white;padding:1px 5px;border-radius:3px;font-size:9px;margin-right:4px">Google_KR</span><a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTE1zaXFqalJURThPNXJwZ3I4cWxrLVdCMmdQXzFHdmdaYTVpdDF0cGhqa3JBVHRkYk9RLUE0QnZWb0piM2pSU0FFNWhtbkVNckdmUWEtNlJhWjN6UQ?oc=5" target="_blank" style="color:#1e40af;text-decoration:none">수입물가 급등···고물가와의 전쟁 대비해야 - 경북매일</a></li></ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ▌하단: 국내외 언론 보도 모니터링 -->
+  <div class="sec-wrap">
+    <div class="sec-hdr">
+      국내외 언론 보도 모니터링 데이터 (크롤링 데이터)
+      <a href="news_result.xlsx" class="dl-btn">크롤링 데이터 (엑셀.xlsx) 다운로드</a>
+    </div>
+    <div style="overflow-x:auto">
+      <table>
+        <thead>
+          <tr>
+            <th>지역</th><th>분류</th><th>언론사</th>
+            <th>보도일(KST)</th><th>제목 (클릭 시 원문)</th>
+          </tr>
+        </thead>
+        <tbody><tr>
+          <td><span style="background:#3b82f6;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국내</span></td>
+          <td><span style="background:#0ea5e9;color:white;padding:2px 6px;border-radius:4px;font-size:9px">에너지/공급</span></td>
+          <td style="color:#374151">Google_KR</td>
+          <td style="color:#64748b">04-19 18:34</td>
+          <td><a href="https://news.google.com/rss/articles/CBMiYkFVX3lxTE1lNllXWWY2dzBfejZqZGtncUxTaEN5VUN0QWh4b2xhVUZEYkY0TElrX3hIV0NVRktQc2V1VGNxTEtxdmdFY0w5YlhTUXRtcm9jN2laMm5neHJRRFE3SDZuZnlB?oc=5" target="_blank" style="color:#3b82f6;text-decoration:none">중동 리스크 속 해법 모색…에너지안보환경협회, 콜로키엄 개최 - 뉴스1</a></td>
+        </tr><tr>
+          <td><span style="background:#ef4444;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국외</span></td>
+          <td><span style="background:#94a3b8;color:white;padding:2px 6px;border-radius:4px;font-size:9px">기타</span></td>
+          <td style="color:#374151">Al Jazeera</td>
+          <td style="color:#64748b">04-19 18:26</td>
+          <td><a href="https://www.aljazeera.com/news/2026/4/19/iran-war-what-is-happening-on-day-51-of-the-us-iran-conflict?traffic_source=rss" target="_blank" style="color:#3b82f6;text-decoration:none">Iran war: What is happening on day 51 of the US-Iran co…</a></td>
+        </tr><tr>
+          <td><span style="background:#3b82f6;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국내</span></td>
+          <td><span style="background:#0ea5e9;color:white;padding:2px 6px;border-radius:4px;font-size:9px">에너지/공급</span></td>
+          <td style="color:#374151">Google_KR</td>
+          <td style="color:#64748b">04-19 18:20</td>
+          <td><a href="https://news.google.com/rss/articles/CBMiiwFBVV95cUxQbzhEYV9SZWxwSngwNEJOT1h3Sngzd1ZQb1RGOFFhVjllcUEtY2hvNjVRX2xnTHZvMmZrdi1ISEtKMl9nclBXMlE5RFFVQUg1alo5Q0x5ZWE3M1VpQkw2SGhXaUpiS0c1YkZ1S2RzSlh5ZjhpT2V4M1g3V2xnbnFOZkx5VWIwNURxMVZn?oc=5" target="_blank" style="color:#3b82f6;text-decoration:none">‘에너지 안보’와 ‘탄소중립’ 두 토끼 잡는다… 남부발전, 온실가스 감축 목표 전격 상향 - 글로벌…</a></td>
+        </tr><tr>
+          <td><span style="background:#ef4444;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국외</span></td>
+          <td><span style="background:#94a3b8;color:white;padding:2px 6px;border-radius:4px;font-size:9px">기타</span></td>
+          <td style="color:#374151">Al Jazeera</td>
+          <td style="color:#64748b">04-19 18:12</td>
+          <td><a href="https://www.aljazeera.com/video/by-the-numbers-3/2026/4/19/how-the-israeli-military-targets-the-people-who-save-lives?traffic_source=rss" target="_blank" style="color:#3b82f6;text-decoration:none">How the Israeli military targets the people who save li…</a></td>
+        </tr><tr>
+          <td><span style="background:#3b82f6;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국내</span></td>
+          <td><span style="background:#0ea5e9;color:white;padding:2px 6px;border-radius:4px;font-size:9px">에너지/공급</span></td>
+          <td style="color:#374151">Google_KR</td>
+          <td style="color:#64748b">04-19 18:12</td>
+          <td><a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTE1zaXFqalJURThPNXJwZ3I4cWxrLVdCMmdQXzFHdmdaYTVpdDF0cGhqa3JBVHRkYk9RLUE0QnZWb0piM2pSU0FFNWhtbkVNckdmUWEtNlJhWjN6UQ?oc=5" target="_blank" style="color:#3b82f6;text-decoration:none">수입물가 급등···고물가와의 전쟁 대비해야 - 경북매일</a></td>
+        </tr><tr>
+          <td><span style="background:#3b82f6;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국내</span></td>
+          <td><span style="background:#0ea5e9;color:white;padding:2px 6px;border-radius:4px;font-size:9px">에너지/공급</span></td>
+          <td style="color:#374151">Google_KR</td>
+          <td style="color:#64748b">04-19 18:08</td>
+          <td><a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTE15UFVSSUZQa3lQRVFELUZsaGZFZGN2b2UtSmZ3aGV3bUpqV3I4a3EwV08wOUdJU3BuUVpFYWp3TW1ZSFRBcS1rdF9EeFE4M3BYQW1vNlpza0xsd9IBVEFVX3lxTE85bGhJTl9tYlQ3TXJCZ0pNclRsUHlyYkJ6UmVfeGxPQU5xcGJUNUc0bUtHZ2xKWC1EcHR4bFczTGJQN3JvOHNTWEJINkk1bUhGUGlobw?oc=5" target="_blank" style="color:#3b82f6;text-decoration:none">'3000만원짜리' 자폭드론 개발 경쟁…중동戰 활약에 프랑스·일본도 관심 - 한국경제</a></td>
+        </tr><tr>
+          <td><span style="background:#3b82f6;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국내</span></td>
+          <td><span style="background:#0ea5e9;color:white;padding:2px 6px;border-radius:4px;font-size:9px">에너지/공급</span></td>
+          <td style="color:#374151">Google_KR</td>
+          <td style="color:#64748b">04-19 18:05</td>
+          <td><a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTFBfSHk2R29oTEk3VWhHdDdTNzJrS01hYVFGSFJ0Wk0xYTcwazFBblMtVURISW9SZTlyQUVxMW5LY1RBbEJGbVFkYUcwNFl2eVlfUDdwN2V1VHJ0UdIBVEFVX3lxTE0yMDJ2WEg4RUVCSlhCOU8yOWZoeE5uNlZPeEtWNGNwaUxLT1lDRnh2aWU4TDc0bTNIZndmTUxiZTRKYUY3WUVKNFF1b3F0eDBibjF3Qw?oc=5" target="_blank" style="color:#3b82f6;text-decoration:none">'중동전쟁 악재' 속 韓경제 1분기 성장률은 - 한국경제</a></td>
+        </tr><tr>
+          <td><span style="background:#3b82f6;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국내</span></td>
+          <td><span style="background:#0ea5e9;color:white;padding:2px 6px;border-radius:4px;font-size:9px">에너지/공급</span></td>
+          <td style="color:#374151">Google_KR</td>
+          <td style="color:#64748b">04-19 18:04</td>
+          <td><a href="https://news.google.com/rss/articles/CBMiT0FVX3lxTE0wZ3B2RC0tak5VYnkycmY0d2F3UUptUWVkdHp4T0FSakNTOG9Sd0tBa25ucVNJUFhBTEkwY2xhVUhlNGRuRy03Rm1ob3pNMVU?oc=5" target="_blank" style="color:#3b82f6;text-decoration:none">최지영 IMF 이사 "중동 전쟁에 한국 성장률 전망 낮춰" - v.daum.net</a></td>
+        </tr><tr>
+          <td><span style="background:#3b82f6;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국내</span></td>
+          <td><span style="background:#10b981;color:white;padding:2px 6px;border-radius:4px;font-size:9px">시장/금융</span></td>
+          <td style="color:#374151">Google_KR</td>
+          <td style="color:#64748b">04-19 18:03</td>
+          <td><a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTE5scVF0eEVLZWZhcTk4QUhFZVJyWDdlRk51azVzTkhiMGhmbG5SUzZGYTVEMS1YalNTNm9RQUtRYklrUVl2U042eFgtRnpoN291LU90RXNVdm1tUdIBVEFVX3lxTE9FV0doSDRZTHJKOUQ5V0M4cWs1am15c1U2TXZiVVR3QnFRUDR4UHcwVk5xOGJ4VDZ4elNIU2o2RUFzaGNCcUstcDIxYXlVOUtvbUFjZQ?oc=5" target="_blank" style="color:#3b82f6;text-decoration:none">뉴욕·상하이 증시, 美 워시 청문회·中 기준금리 '촉각' - 한국경제</a></td>
+        </tr><tr>
+          <td><span style="background:#ef4444;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국외</span></td>
+          <td><span style="background:#94a3b8;color:white;padding:2px 6px;border-radius:4px;font-size:9px">기타</span></td>
+          <td style="color:#374151">TASS</td>
+          <td style="color:#64748b">04-19 18:03</td>
+          <td><a href="https://tass.com/world/2119273" target="_blank" style="color:#3b82f6;text-decoration:none">Israeli army announces death of another soldier in Leba…</a></td>
+        </tr><tr>
+          <td><span style="background:#ef4444;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국외</span></td>
+          <td><span style="background:#94a3b8;color:white;padding:2px 6px;border-radius:4px;font-size:9px">기타</span></td>
+          <td style="color:#374151">TASS</td>
+          <td style="color:#64748b">04-19 18:01</td>
+          <td><a href="https://tass.com/world/2119271" target="_blank" style="color:#3b82f6;text-decoration:none">Iran war Trump’s ‘feeble attempt’ to distract attention…</a></td>
+        </tr><tr>
+          <td><span style="background:#3b82f6;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국내</span></td>
+          <td><span style="background:#0ea5e9;color:white;padding:2px 6px;border-radius:4px;font-size:9px">에너지/공급</span></td>
+          <td style="color:#374151">Google_KR</td>
+          <td style="color:#64748b">04-19 17:52</td>
+          <td><a href="https://news.google.com/rss/articles/CBMiW0FVX3lxTFBZbXBUOTJmODhGaTdGV1ZyQ2pvU0diNlc4LUg5cUJqS2JzQXFMVXdEdDFrT05XR3RDM1B5TnZTcl9XZTQ5Y09vUmkxaUZhNm5KUklET3pZZ0dlMEE?oc=5" target="_blank" style="color:#3b82f6;text-decoration:none">“이스라엘군, 휴전 파기시 이란 에너지 시설 공격” - KBS 뉴스</a></td>
+        </tr><tr>
+          <td><span style="background:#ef4444;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국외</span></td>
+          <td><span style="background:#94a3b8;color:white;padding:2px 6px;border-radius:4px;font-size:9px">기타</span></td>
+          <td style="color:#374151">Al Jazeera</td>
+          <td style="color:#64748b">04-19 17:49</td>
+          <td><a href="https://www.aljazeera.com/news/2026/4/19/iran-us-still-far-from-breakthrough-in-strait-of-hormuz-impasse?traffic_source=rss" target="_blank" style="color:#3b82f6;text-decoration:none">Iran, US still ‘far’ from breakthrough amid Strait of H…</a></td>
+        </tr><tr>
+          <td><span style="background:#3b82f6;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국내</span></td>
+          <td><span style="background:#0ea5e9;color:white;padding:2px 6px;border-radius:4px;font-size:9px">에너지/공급</span></td>
+          <td style="color:#374151">Google_KR</td>
+          <td style="color:#64748b">04-19 17:47</td>
+          <td><a href="https://news.google.com/rss/articles/CBMibEFVX3lxTE4ybS1SZkh3RmVQNkNWTVgzUW1TNjhXOWJoSjdWVE9VUGYwaE1QTUtfb1o5VExRQVJOWmxTNHNiTFF0MTJXTWx3cmE5QWNJNjBHSE5GeU5ZWWREWXRBelZ1QTNrNDM3aEpraEVGWNIBcEFVX3lxTE9lM3NUcjRMU1lSbmRPXzA3S1gxQTZsQjBpaElRZElnaWJnMFduUEZ3TFFXZmNINkl2RWRmeTZmLWNELW1heWJDNVlfWldjUXZ0d1RudHdfaWEtS3FmNldyTWh1OTh4ckF0SGU0NDZzajA?oc=5" target="_blank" style="color:#3b82f6;text-decoration:none">가스안전공사, 공공데이터 평가 ‘우수’등급 달성 - 에너지플랫폼뉴스</a></td>
+        </tr><tr>
+          <td><span style="background:#ef4444;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국외</span></td>
+          <td><span style="background:#94a3b8;color:white;padding:2px 6px;border-radius:4px;font-size:9px">기타</span></td>
+          <td style="color:#374151">BBC</td>
+          <td style="color:#64748b">04-19 17:46</td>
+          <td><a href="https://www.bbc.com/news/videos/cz0e54yrppno?at_medium=RSS&at_campaign=rss" target="_blank" style="color:#3b82f6;text-decoration:none">Watch: Runners v robots at China half marathon</a></td>
+        </tr><tr>
+          <td><span style="background:#3b82f6;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국내</span></td>
+          <td><span style="background:#0ea5e9;color:white;padding:2px 6px;border-radius:4px;font-size:9px">에너지/공급</span></td>
+          <td style="color:#374151">Google_KR</td>
+          <td style="color:#64748b">04-19 17:43</td>
+          <td><a href="https://news.google.com/rss/articles/CBMib0FVX3lxTE01dy1XbWVxVU95RGJhR2s3YjJYT2tzTUROTC1rLU12YnpsT3g2U2RjekNCNWZ2VmJhWlI1b3BhcTRUVGo4bVpuWmJhR3RJQ0lGMXQzdVNfVnVQb0R6RmpEMS1EUTY4OTZ3WTN2MnJQRQ?oc=5" target="_blank" style="color:#3b82f6;text-decoration:none">이스라엘 “휴전 깨지면 이란 에너지시설 타격” 경고 - 진일보</a></td>
+        </tr><tr>
+          <td><span style="background:#3b82f6;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국내</span></td>
+          <td><span style="background:#0ea5e9;color:white;padding:2px 6px;border-radius:4px;font-size:9px">에너지/공급</span></td>
+          <td style="color:#374151">Google_KR</td>
+          <td style="color:#64748b">04-19 17:40</td>
+          <td><a href="https://news.google.com/rss/articles/CBMiakFVX3lxTE5LYjl3LXZVM1NpUkxlNlNuclNPelVPLUV3ZktCSHdDZWxqQnhDMl9NWUdTLXFVQTl6b2NOazlYU0NWZ3A2cG92b3BIM2tCSlNNZ0JoWklRWEdYdUNWQUxtT05sUWtXdnMyTkHSAW5BVV95cUxNV0NPcmN1OWxSNXUtVU03UlhkM1BPWktJaHY5eG1PbXMxSnA3NldQRGRILWJpeF9QVjhEMmRnMUF0SzNxQWNXdHNuc2MwNEtlanMxNDdjVDFWdENMRUxkU21yRjdrNTJUMndTMms0QQ?oc=5" target="_blank" style="color:#3b82f6;text-decoration:none">“중동 파고 막아라”...울산시, 중기 긴급 수혈 - 울산매일</a></td>
+        </tr><tr>
+          <td><span style="background:#3b82f6;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국내</span></td>
+          <td><span style="background:#0ea5e9;color:white;padding:2px 6px;border-radius:4px;font-size:9px">에너지/공급</span></td>
+          <td style="color:#374151">Google_KR</td>
+          <td style="color:#64748b">04-19 17:38</td>
+          <td><a href="https://news.google.com/rss/articles/CBMibEFVX3lxTE1neDZmOGV6OTNOR3M0djhpbk9VZll2NDdGWjR4d2FEdktlUGMyZ3ZhVDBUdFc1V09tV2llSkp0dEJUNmJWWUo5VWpWY3d2TkV5a1BoQnZJcmtGS0M0VFRzT1FQbUJSd1pVVjdGdNIBcEFVX3lxTE5kdmN0YjVieTlNLW5hOUZuVVNkTEhtZTlTcTF4b3JaSThFT0E1dEluX19DbXdfcHF0Tjk1MkNOQzlkQV94WTJyN2NQVEtLaUNDek9IN0FBRDlxbnhkYTNCNXNPbWxRYmJ4bVZ3aFFweE8?oc=5" target="_blank" style="color:#3b82f6;text-decoration:none">제72회 경기도체육대회 대비 가스안전홍보 실시 - 에너지플랫폼뉴스</a></td>
+        </tr><tr>
+          <td><span style="background:#3b82f6;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국내</span></td>
+          <td><span style="background:#0ea5e9;color:white;padding:2px 6px;border-radius:4px;font-size:9px">에너지/공급</span></td>
+          <td style="color:#374151">Google_KR</td>
+          <td style="color:#64748b">04-19 17:32</td>
+          <td><a href="https://news.google.com/rss/articles/CBMiakFVX3lxTE1DX1I0d2xHRFhPSEQ5WUJRdm9IMWhVZi1pbXJRU0JMc0UwSS1rd0tEajQ0U2I2Nl9QTnNKbVY0LUtjSWZ3LWRLNzkzQW13RWdlRThoYl9uY0JtcE9nVTNZeFRGTTc2RkNPZFE?oc=5" target="_blank" style="color:#3b82f6;text-decoration:none">강원특별자치도, 강릉상공회의소와 중동발 경제위기 대응 간담회 개최 - 한국시사경제</a></td>
+        </tr><tr>
+          <td><span style="background:#3b82f6;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국내</span></td>
+          <td><span style="background:#94a3b8;color:white;padding:2px 6px;border-radius:4px;font-size:9px">기타</span></td>
+          <td style="color:#374151">Google_KR</td>
+          <td style="color:#64748b">04-19 17:30</td>
+          <td><a href="https://news.google.com/rss/articles/CBMiY0FVX3lxTFBCeHFRMHUzbkJSUVZsVzhuY053ZWstcVRTZXpTMFRWNGpmcEVmcW1wdVRGYnZwUDRQUElVNHlTSEtPcEU4U3VqYktoLVo2T18tV2JWbjQ5cy1IY0lWb0tfTl85TQ?oc=5" target="_blank" style="color:#3b82f6;text-decoration:none">수원시청소년청년재단–수원시도서관사업소-수원시서점협동조합 MOU 체결 - 경기탑뉴스</a></td>
+        </tr><tr>
+          <td><span style="background:#3b82f6;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국내</span></td>
+          <td><span style="background:#0ea5e9;color:white;padding:2px 6px;border-radius:4px;font-size:9px">에너지/공급</span></td>
+          <td style="color:#374151">Google_KR</td>
+          <td style="color:#64748b">04-19 17:27</td>
+          <td><a href="https://news.google.com/rss/articles/CBMibEFVX3lxTFBtT09rODNVbWs0MVlGd2NfYlRDMW5XenZ6ZGZ5WmtfREg0ODZmOVVqWGNlRlpkSzVlS1E3Y2RuU29xdXdSWWN2Q2RFTjF5VkpzRWZEOS1Lc01ITVJrTkxuYkpFODRPZW95RnZEQ9IBcEFVX3lxTFA5RjBkZ2QySVhlN21tZG9sNE9teHdYb0doWlNwelJyZnRwZmVaMXQ5d0dpY3ptbFZZWFVzUk15RDNNdmFtT2s1NXIwRzU5RzdIY2NaNG9hRHV1bEdpNUIwV3VJVFIwS3I4Zk9abGZGSGc?oc=5" target="_blank" style="color:#3b82f6;text-decoration:none">가스안전公 대구광역本, 안전지원사업 평가·운영委 개최 - 에너지플랫폼뉴스</a></td>
+        </tr><tr>
+          <td><span style="background:#3b82f6;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국내</span></td>
+          <td><span style="background:#06b6d4;color:white;padding:2px 6px;border-radius:4px;font-size:9px">에너지/인프라</span></td>
+          <td style="color:#374151">Google_KR</td>
+          <td style="color:#64748b">04-19 17:25</td>
+          <td><a href="https://news.google.com/rss/articles/CBMicEFVX3lxTFBQd1FEWnplMGRhZUJoTDk4R3JVUzJXdF9nVGxnOVFocHJYaGhWOWNiYnFWMXA1ODBlS2FyejNjTHhUOERpNF9yampTaURleXFzVDkycnJPSHc0dTNYdXUzUmdQRFYxTXUtSkZWRTUwem4?oc=5" target="_blank" style="color:#3b82f6;text-decoration:none">칠곡군, 공공부문 에너지 절감 총력 - 프레스뉴스</a></td>
+        </tr><tr>
+          <td><span style="background:#3b82f6;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국내</span></td>
+          <td><span style="background:#94a3b8;color:white;padding:2px 6px;border-radius:4px;font-size:9px">기타</span></td>
+          <td style="color:#374151">Google_KR</td>
+          <td style="color:#64748b">04-19 17:22</td>
+          <td><a href="https://news.google.com/rss/articles/CBMiYkFVX3lxTFBwNTRqWXAzNkFOQXRzOVZuSHBVZ1dTV2pDQ0xaMHpUZ3BvVHV5YXI5czFmMEhqcWR0OUZxVC1iTVQxQkItZHBjXzVfOTN2ckU5WHBldmUyT3RjMkhQV2V3b1BR?oc=5" target="_blank" style="color:#3b82f6;text-decoration:none">수원시, 축제 엑스포에서 '수원 방문의 해' 홍보 실시 - 경기신문</a></td>
+        </tr><tr>
+          <td><span style="background:#3b82f6;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국내</span></td>
+          <td><span style="background:#94a3b8;color:white;padding:2px 6px;border-radius:4px;font-size:9px">기타</span></td>
+          <td style="color:#374151">Google_KR</td>
+          <td style="color:#64748b">04-19 17:21</td>
+          <td><a href="https://news.google.com/rss/articles/CBMiYkFVX3lxTE5lVVNGMzVsRHBoS2VwYXltS2xjQUhkRUVMdExiU1VMbVVXV281cTZaT1lmdC02b1ppOVV3ekE0SlBfYVNFcDlVN0JWLVkxLTBFSnV0WmgwYTZKOUJyejB5bi1B?oc=5" target="_blank" style="color:#3b82f6;text-decoration:none">27년 방치된 통학로 개선 사업…수원시 최우수 적극행정 사례 선정 - 경기신문</a></td>
+        </tr><tr>
+          <td><span style="background:#3b82f6;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국내</span></td>
+          <td><span style="background:#0ea5e9;color:white;padding:2px 6px;border-radius:4px;font-size:9px">에너지/공급</span></td>
+          <td style="color:#374151">Google_KR</td>
+          <td style="color:#64748b">04-19 17:14</td>
+          <td><a href="https://news.google.com/rss/articles/CBMidEFVX3lxTE1LOGZNZHdOSEFJYUxJSW10R1NyWTU2VU1fWGROd2Jmdmx4UGxZdXpKTXItcm9ETWd5ZzhZYWdaTmVDdExyWFE2RW9HOVE3RnlsRkdibF82d0dNMXRmY1dyaVhtQXZDZF9aSExkcGZ3RGU3YUxI?oc=5" target="_blank" style="color:#3b82f6;text-decoration:none">트럼프 "이스라엘은 위대한 동맹…남들과 달리 강하게 싸워" - 연합뉴스 한민족센터</a></td>
+        </tr><tr>
+          <td><span style="background:#ef4444;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국외</span></td>
+          <td><span style="background:#94a3b8;color:white;padding:2px 6px;border-radius:4px;font-size:9px">기타</span></td>
+          <td style="color:#374151">TASS</td>
+          <td style="color:#64748b">04-19 17:13</td>
+          <td><a href="https://tass.com/society/2119267" target="_blank" style="color:#3b82f6;text-decoration:none">Two Ukrainian police officers flee shooting scene, leav…</a></td>
+        </tr><tr>
+          <td><span style="background:#3b82f6;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국내</span></td>
+          <td><span style="background:#06b6d4;color:white;padding:2px 6px;border-radius:4px;font-size:9px">에너지/인프라</span></td>
+          <td style="color:#374151">Google_KR</td>
+          <td style="color:#64748b">04-19 17:12</td>
+          <td><a href="https://news.google.com/rss/articles/CBMiT0FVX3lxTFBhWWItbElnWTdjY1RkZk5fZnYzeGZOWjdMWExIaEl6U2pMSGlpVzkwN00zLS1yXzNQWmZkRFRLeHN4Zzl6ellVZENVZUxFYUE?oc=5" target="_blank" style="color:#3b82f6;text-decoration:none">이 대통령 인도·베트남 순방…“에너지·공급망 협력” - v.daum.net</a></td>
+        </tr><tr>
+          <td><span style="background:#ef4444;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국외</span></td>
+          <td><span style="background:#94a3b8;color:white;padding:2px 6px;border-radius:4px;font-size:9px">기타</span></td>
+          <td style="color:#374151">TASS</td>
+          <td style="color:#64748b">04-19 17:11</td>
+          <td><a href="https://tass.com/world/2119265" target="_blank" style="color:#3b82f6;text-decoration:none">Trump considers Israel great ally of US, unlike other c…</a></td>
+        </tr><tr>
+          <td><span style="background:#ef4444;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국외</span></td>
+          <td><span style="background:#94a3b8;color:white;padding:2px 6px;border-radius:4px;font-size:9px">기타</span></td>
+          <td style="color:#374151">TASS</td>
+          <td style="color:#64748b">04-19 17:10</td>
+          <td><a href="https://tass.com/world/2119263" target="_blank" style="color:#3b82f6;text-decoration:none">World knows Russia would use entire arsenal of weapons …</a></td>
+        </tr><tr>
+          <td><span style="background:#ef4444;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국외</span></td>
+          <td><span style="background:#94a3b8;color:white;padding:2px 6px;border-radius:4px;font-size:9px">기타</span></td>
+          <td style="color:#374151">TASS</td>
+          <td style="color:#64748b">04-19 17:10</td>
+          <td><a href="https://tass.com/society/2119259" target="_blank" style="color:#3b82f6;text-decoration:none">Mathematic formula only way to determine number of Sovi…</a></td>
+        </tr><tr>
+          <td><span style="background:#3b82f6;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국내</span></td>
+          <td><span style="background:#06b6d4;color:white;padding:2px 6px;border-radius:4px;font-size:9px">에너지/인프라</span></td>
+          <td style="color:#374151">Google_KR</td>
+          <td style="color:#64748b">04-19 17:09</td>
+          <td><a href="https://news.google.com/rss/articles/CBMiT0FVX3lxTE1DdTQtZ3AwcTUxMXVlNGt2cVZqUUZiQTBZOGluSVlvZ19odEg0YXgzYW8zRnJXX0dZbGtTMi1HSkd1YkhFYVFkRjBNWjIzSkU?oc=5" target="_blank" style="color:#3b82f6;text-decoration:none">천문연 '암흑에너지 관측 국제 프로젝트' 사상 최대 규모 고해상도 3D 우주 지도 완성 - v.da…</a></td>
+        </tr><tr>
+          <td><span style="background:#ef4444;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국외</span></td>
+          <td><span style="background:#94a3b8;color:white;padding:2px 6px;border-radius:4px;font-size:9px">기타</span></td>
+          <td style="color:#374151">TASS</td>
+          <td style="color:#64748b">04-19 17:08</td>
+          <td><a href="https://tass.com/world/2119257" target="_blank" style="color:#3b82f6;text-decoration:none">Belarus ready for big deal with US, but it needs to be …</a></td>
+        </tr><tr>
+          <td><span style="background:#ef4444;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국외</span></td>
+          <td><span style="background:#0ea5e9;color:white;padding:2px 6px;border-radius:4px;font-size:9px">에너지/공급</span></td>
+          <td style="color:#374151">TASS</td>
+          <td style="color:#64748b">04-19 17:07</td>
+          <td><a href="https://tass.com/economy/2119255" target="_blank" style="color:#3b82f6;text-decoration:none">US sanctions relief on Russian oil extension important …</a></td>
+        </tr><tr>
+          <td><span style="background:#ef4444;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국외</span></td>
+          <td><span style="background:#94a3b8;color:white;padding:2px 6px;border-radius:4px;font-size:9px">기타</span></td>
+          <td style="color:#374151">Al Jazeera</td>
+          <td style="color:#64748b">04-19 17:05</td>
+          <td><a href="https://www.aljazeera.com/sports/2026/4/19/lionel-messi-scores-twice-as-inter-miami-defeat-rapids-in-mls?traffic_source=rss" target="_blank" style="color:#3b82f6;text-decoration:none">Lionel Messi scores twice as Inter Miami defeat Rapids …</a></td>
+        </tr><tr>
+          <td><span style="background:#3b82f6;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국내</span></td>
+          <td><span style="background:#06b6d4;color:white;padding:2px 6px;border-radius:4px;font-size:9px">에너지/인프라</span></td>
+          <td style="color:#374151">Google_KR</td>
+          <td style="color:#64748b">04-19 17:05</td>
+          <td><a href="https://news.google.com/rss/articles/CBMiW0FVX3lxTE5rcy1lVjQybDhQWVhxTFd3TUZjaHRUMEpGTTJ1UkxNWTFpSVVoakpoWHZpM2lYb2htUGVmaldHMjZCOUVfajlYSlJJV2E5a0tmcUFIdDBoQV9oWE0?oc=5" target="_blank" style="color:#3b82f6;text-decoration:none">이 대통령 인도·베트남 순방…“에너지·공급망 협력” - KBS 뉴스</a></td>
+        </tr><tr>
+          <td><span style="background:#3b82f6;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국내</span></td>
+          <td><span style="background:#0ea5e9;color:white;padding:2px 6px;border-radius:4px;font-size:9px">에너지/공급</span></td>
+          <td style="color:#374151">Google_KR</td>
+          <td style="color:#64748b">04-19 17:02</td>
+          <td><a href="https://news.google.com/rss/articles/CBMicEFVX3lxTFBiS0x2ejdnNExQRzFoRDI2SDNuQTNHblA1VzNxZnlvMWVSVFJlb19NREpsc0puSDZlS25DSEt2NmNvc19QVlJjQzVob2ZoV2U1S0VvZ3BMX1BhcWJPMDNTeUJWNThfVy1kSFc2b1FBYUI?oc=5" target="_blank" style="color:#3b82f6;text-decoration:none">중동發 수출 직격탄…인천 중기 '버티기 안간힘' - 인천일보</a></td>
+        </tr><tr>
+          <td><span style="background:#3b82f6;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국내</span></td>
+          <td><span style="background:#0ea5e9;color:white;padding:2px 6px;border-radius:4px;font-size:9px">에너지/공급</span></td>
+          <td style="color:#374151">Google_KR</td>
+          <td style="color:#64748b">04-19 16:59</td>
+          <td><a href="https://news.google.com/rss/articles/CBMiakFVX3lxTE5pYy01WHR2N1ZhYWNMNHpKcUFGZHpkOEVlaTBGb2tQcVhBa2kxNTNpZkN3RzNMWkxkT3I0M1RscXVqZ3dsYU03bnJxRzRkVTN3c05fdEFPVi1xc3E4NDR3bHo5bTd3VlhHZlE?oc=5" target="_blank" style="color:#3b82f6;text-decoration:none">아시아의 원유 비축량, 중동 분쟁보다 오래 버틸 수 있을까? - Investing.com 한국어</a></td>
+        </tr><tr>
+          <td><span style="background:#3b82f6;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국내</span></td>
+          <td><span style="background:#0ea5e9;color:white;padding:2px 6px;border-radius:4px;font-size:9px">에너지/공급</span></td>
+          <td style="color:#374151">Google_KR</td>
+          <td style="color:#64748b">04-19 16:58</td>
+          <td><a href="https://news.google.com/rss/articles/CBMidEFVX3lxTE1ZOGpoblBxaDF5cG5OMEFTZ3FHV2E5ZUZISnRiV2FNdTZuZndoOXhpbmdRQnlWTGFvYjBUMTNLMjhaZ0RYcU9icXpKNE5OS3QzSG1BUFV4bXlrVFZoLUJ5RzBMN0NqMTYxSnRvRFJoTG5CNzRl?oc=5" target="_blank" style="color:#3b82f6;text-decoration:none">이란 대통령 "트럼프가 핵 권리 박탈하려 해…적과 맞서야" - 연합뉴스 한민족센터</a></td>
+        </tr><tr>
+          <td><span style="background:#ef4444;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국외</span></td>
+          <td><span style="background:#94a3b8;color:white;padding:2px 6px;border-radius:4px;font-size:9px">기타</span></td>
+          <td style="color:#374151">BBC</td>
+          <td style="color:#64748b">04-19 16:49</td>
+          <td><a href="https://www.bbc.com/news/articles/ce8jl1271pjo?at_medium=RSS&at_campaign=rss" target="_blank" style="color:#3b82f6;text-decoration:none">Bodies of 50 infants dumped at Trinidad graveyard</a></td>
+        </tr><tr>
+          <td><span style="background:#ef4444;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국외</span></td>
+          <td><span style="background:#94a3b8;color:white;padding:2px 6px;border-radius:4px;font-size:9px">기타</span></td>
+          <td style="color:#374151">BBC</td>
+          <td style="color:#64748b">04-19 16:47</td>
+          <td><a href="https://www.bbc.com/news/articles/ce84j261kj1o?at_medium=RSS&at_campaign=rss" target="_blank" style="color:#3b82f6;text-decoration:none">Pope says 'tyrants' speech was not aimed at Trump</a></td>
+        </tr><tr>
+          <td><span style="background:#3b82f6;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국내</span></td>
+          <td><span style="background:#06b6d4;color:white;padding:2px 6px;border-radius:4px;font-size:9px">에너지/인프라</span></td>
+          <td style="color:#374151">Google_KR</td>
+          <td style="color:#64748b">04-19 16:44</td>
+          <td><a href="https://news.google.com/rss/articles/CBMiYEFVX3lxTE9jRkVIZmFxcUd1SnRVQ0F5LWdYMXFrZDY2Tzd0VHV6QUMtR1dXYjFuNVNsSi04TERmVU14b0JfSVZSX3NhUV9UZXNIMG43aWlWSVNRRmVVOVpSZm11Q3BmSg?oc=5" target="_blank" style="color:#3b82f6;text-decoration:none">에너지 절약 앞장선다더니…'공영주차장 5부제' 시행 지자체 절반뿐 - 아시아경제</a></td>
+        </tr><tr>
+          <td><span style="background:#ef4444;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국외</span></td>
+          <td><span style="background:#94a3b8;color:white;padding:2px 6px;border-radius:4px;font-size:9px">기타</span></td>
+          <td style="color:#374151">Al Jazeera</td>
+          <td style="color:#64748b">04-19 16:35</td>
+          <td><a href="https://www.aljazeera.com/video/newsfeed/2026/4/19/fire-engulfs-more-than-200-homes-in-malaysian-floating-village?traffic_source=rss" target="_blank" style="color:#3b82f6;text-decoration:none">Fire engulfs more than 200 homes in Malaysian floating …</a></td>
+        </tr><tr>
+          <td><span style="background:#3b82f6;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국내</span></td>
+          <td><span style="background:#94a3b8;color:white;padding:2px 6px;border-radius:4px;font-size:9px">기타</span></td>
+          <td style="color:#374151">Google_KR</td>
+          <td style="color:#64748b">04-19 16:34</td>
+          <td><a href="https://news.google.com/rss/articles/CBMiTkFVX3lxTFBjek1nZlJTQnc5bURBRlRsUHcxdDhELVR4ZU0xWU9RYm5wNU9ZXzIyMWc3akktUVdVLXdTd3JKaUJnbldMQUc2bUxSTnlEdw?oc=5" target="_blank" style="color:#3b82f6;text-decoration:none">수원시, 축제 보따리 풀었다…엑스포서 관광매력 전국에 한껏 더 선봬 - 전자신문</a></td>
+        </tr><tr>
+          <td><span style="background:#3b82f6;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국내</span></td>
+          <td><span style="background:#06b6d4;color:white;padding:2px 6px;border-radius:4px;font-size:9px">에너지/인프라</span></td>
+          <td style="color:#374151">Google_KR</td>
+          <td style="color:#64748b">04-19 16:28</td>
+          <td><a href="https://news.google.com/rss/articles/CBMiakFVX3lxTFB2STVucDAyTkxhZ3dSZFhoQl9JM2I0cS0xQ1h4blR2allCaGlnV2RtWFN2dXhoTFVXb1hZZjd0bllMbVAzVlZFLTNnNGstYWp2X0tBcUV3ZDltYTNfcGpOWkZ0LUhuZ3p0ZFE?oc=5" target="_blank" style="color:#3b82f6;text-decoration:none">명현관 예비후보, “해남형 AI·에너지 메가특구, 대한민국 경제 심장 만들겠다” - 데일리저널</a></td>
+        </tr><tr>
+          <td><span style="background:#3b82f6;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국내</span></td>
+          <td><span style="background:#10b981;color:white;padding:2px 6px;border-radius:4px;font-size:9px">시장/금융</span></td>
+          <td style="color:#374151">Google_KR</td>
+          <td style="color:#64748b">04-19 16:26</td>
+          <td><a href="https://news.google.com/rss/articles/CBMickFVX3lxTE9NZEU1X0JkMDc2UWgxNEtWbWVSNktPck04SFlqNkdfYU9SZ09pX1h5NTBOTW10ZTdzeUUweHhibW1FTWpnTDBnMk9HVXlEeGVHbUxsY3B2cW0yTFU4ZXdHclBwbERJbGFnV2daWS1BeVVZQQ?oc=5" target="_blank" style="color:#3b82f6;text-decoration:none">고유가, ‘근원물가’ 자극할라…한번 올라가면 안 떨어져 - 한겨레</a></td>
+        </tr><tr>
+          <td><span style="background:#3b82f6;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국내</span></td>
+          <td><span style="background:#06b6d4;color:white;padding:2px 6px;border-radius:4px;font-size:9px">에너지/인프라</span></td>
+          <td style="color:#374151">Google_KR</td>
+          <td style="color:#64748b">04-19 16:18</td>
+          <td><a href="https://news.google.com/rss/articles/CBMihAFBVV95cUxNOWZ5U1Z4S2E1dU5IZ3c3SWNoVlZMencyVks3VXAxQVN3akN5anZrcW1fVjhkRGNNT3dTYy16aG51NUkwVUsyOTltVzZuVjlCeWR1MF9UaE1kUF9RbjZQYzJVbVRMV29wdEJFYUVhQ1Y4dEUtclR6LWctbXFLeDB5ZnE3SXk?oc=5" target="_blank" style="color:#3b82f6;text-decoration:none">[글로벌이코노믹 사설] 에너지 안보 종합 대책 필요하다 - 글로벌이코노믹</a></td>
+        </tr><tr>
+          <td><span style="background:#3b82f6;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국내</span></td>
+          <td><span style="background:#10b981;color:white;padding:2px 6px;border-radius:4px;font-size:9px">시장/금융</span></td>
+          <td style="color:#374151">Google_KR</td>
+          <td style="color:#64748b">04-19 16:13</td>
+          <td><a href="https://news.google.com/rss/articles/CBMiakFVX3lxTFA4NVhsejFTNDJpQ0xMVXpYOEJYbzhadlgxeXNzZUN0c2Z6VGNHMzI4a1Zvd051ZTFHeHJxY3Z3ejRMZVlYS256TDlSc2ptOUFkVzdaV1pvSFpVODVod0NHdDBqdThFYl9GWnc?oc=5" target="_blank" style="color:#3b82f6;text-decoration:none">“만원 한 끼도 부담” 전북 외식물가 상승세 고착화 - 전북도민일보</a></td>
+        </tr><tr>
+          <td><span style="background:#3b82f6;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국내</span></td>
+          <td><span style="background:#10b981;color:white;padding:2px 6px;border-radius:4px;font-size:9px">시장/금융</span></td>
+          <td style="color:#374151">Google_KR</td>
+          <td style="color:#64748b">04-19 16:08</td>
+          <td><a href="https://news.google.com/rss/articles/CBMiYEFVX3lxTFBZRTFBUXQ4M2VLYU1tYjRWNDNDRXk4STZCSFQ0cjVES3hVUmNXMEZEdWxuNEQ1UWpWcFFFNEo0b1VXLXh3aFA0aUxONUd1Q3JUcXlFUU5yTUxQNWtXNXN2NA?oc=5" target="_blank" style="color:#3b82f6;text-decoration:none">세계 경제도 '폭풍전야'…또 노딜 땐 '유가·환율 쇼크' - 뉴스토마토</a></td>
+        </tr><tr>
+          <td><span style="background:#3b82f6;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국내</span></td>
+          <td><span style="background:#06b6d4;color:white;padding:2px 6px;border-radius:4px;font-size:9px">에너지/인프라</span></td>
+          <td style="color:#374151">Google_KR</td>
+          <td style="color:#64748b">04-19 16:06</td>
+          <td><a href="https://news.google.com/rss/articles/CBMihAFBVV95cUxNQThtd2dUWk5MM1pBQ01VcUFNOEE4aDdZSUdMWXhjY3BVYmlkc053UHFhRGJtdlUzNjktZ09GTUViNHIycm5ESm44a1NWUWR3ZVdmU3J1b1JMUXlHRjFFSlhVZkRWaTZuenlMeTFPbURsTkt6dFBPM1VpRDZwZG1Bd0tydHo?oc=5" target="_blank" style="color:#3b82f6;text-decoration:none">[이한우의 에너지 톺아보기] NESI, 숫자로 읽는 에너지 안보의 설계도 - 글로벌이코노믹</a></td>
+        </tr><tr>
+          <td><span style="background:#3b82f6;color:white;padding:2px 6px;border-radius:4px;font-size:9px">국내</span></td>
+          <td><span style="background:#94a3b8;color:white;padding:2px 6px;border-radius:4px;font-size:9px">기타</span></td>
+          <td style="color:#374151">Google_KR</td>
+          <td style="color:#64748b">04-19 16:03</td>
+          <td><a href="https://news.google.com/rss/articles/CBMiZEFVX3lxTE5qRXhfdWFCdnFRbFRfRTZiMVl5V0p4R1k1aVliOEFkdU5MYktrczhCcERYSmFnLW5zNVF2U3B6N2ZNY05zRGJvTU5oUFdhdDZhd0lnSjdfV3FfSmF0ckhKM1FBTUo?oc=5" target="_blank" style="color:#3b82f6;text-decoration:none">수원시의회, 제24회 경기마라톤 대회 참석 - 매일일보</a></td>
+        </tr></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// 주간 키워드 차트
+new Chart(document.getElementById('kwChart'), {
+  type: 'line',
+  data: {
+    labels: ["Apr 13", "Apr 14", "Apr 15", "Apr 16", "Apr 17", "Apr 18", "Apr 19"],
+    datasets: [{"label": "\uc5d0\ub108\uc9c0/\uacf5\uae09", "data": [0, 0, 0, 0, 0, 0, 50], "borderColor": "#3b82f6", "backgroundColor": "#3b82f614", "tension": 0.4, "pointRadius": 3, "borderWidth": 2}, {"label": "\uc5d0\ub108\uc9c0/\uc778\ud504\ub77c", "data": [0, 0, 0, 0, 1, 0, 30], "borderColor": "#06b6d4", "backgroundColor": "#06b6d414", "tension": 0.4, "pointRadius": 3, "borderWidth": 2}, {"label": "\uc2dc\uc7a5/\uae08\uc735", "data": [0, 0, 0, 0, 0, 0, 12], "borderColor": "#10b981", "backgroundColor": "#10b98114", "tension": 0.4, "pointRadius": 3, "borderWidth": 2}, {"label": "\uc0dd\ud65c/\ubbfc\uc0dd", "data": [0, 0, 0, 0, 0, 0, 0], "borderColor": "#f59e0b", "backgroundColor": "#f59e0b14", "tension": 0.4, "pointRadius": 3, "borderWidth": 2}, {"label": "\uc815\ucc45/\ub300\uc751", "data": [0, 0, 0, 0, 0, 0, 0], "borderColor": "#ef4444", "backgroundColor": "#ef444414", "tension": 0.4, "pointRadius": 3, "borderWidth": 2}]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{ labels:{ font:{ size:9 }, boxWidth:10 } } },
+    scales:{
+      x:{ ticks:{ font:{ size:9 } }, grid:{ display:false } },
+      y:{ ticks:{ font:{ size:9 } }, beginAtZero:true }
+    }
+  }
+});
+
+// 경제 지표 차트
+
+    new Chart(document.getElementById('econChart'), {
+        type: 'line',
+        data: {
+            labels: ["04-06", "04-07", "04-08", "04-09", "04-10", "04-13", "04-14", "04-15", "04-16", "04-17"],
+            datasets: [
+                { label: '환율(USD/KRW)', data: [112.4, 112.9, 94.4, 97.9, 96.6, 99.1, 91.3, 91.3, 94.7, 82.6], borderColor:'#3b82f6', tension:0.3, pointRadius:3, borderWidth:2, yAxisID:'y' },
+                { label: 'WTI유가',       data: [1509.26, 1507.85, 1499.13, 1477.6, 1473.28, 1482.18, 1476.84, 1469.42, 1474.06, 1465.68],       borderColor:'#ef4444', tension:0.3, pointRadius:3, borderWidth:2, yAxisID:'y2' },
+                { label: '금값',          data: [4656.8, 4657.1, 4749.5, 4792.2, 4761.9, 4742.4, 4825.0, 4800.0, 4785.4, 4879.6],          borderColor:'#f59e0b', tension:0.3, pointRadius:3, borderWidth:2, yAxisID:'y2' }
+            ]
+        },
+        options: {
+            responsive:true, maintainAspectRatio:false,
+            plugins:{ legend:{ labels:{ font:{ size:10 }, boxWidth:12 } } },
+            scales:{
+                x:  { ticks:{ font:{ size:9 } }, grid:{ display:false } },
+                y:  { ticks:{ font:{ size:9 } }, title:{ display:true, text:'환율', font:{ size:9 } } },
+                y2: { position:'right', ticks:{ font:{ size:9 } }, title:{ display:true, text:'유가/금', font:{ size:9 } }, grid:{ drawOnChartArea:false } }
+            }
+        }
+    });
+
+// 유튜브 탭 전환
+function openTab(evt, id) {
+  document.querySelectorAll('[id^="yt"]').forEach(el => el.style.display='none');
+  document.querySelectorAll('.ytbtn').forEach(btn => btn.classList.remove('active'));
+  document.getElementById(id).style.display = 'block';
+  evt.currentTarget.classList.add('active');
+}
+</script>
+</body>
+</html>
