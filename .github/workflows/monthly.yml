@@ -30,8 +30,9 @@ jobs:
 
       - name: 결과물 커밋 & 푸시
         run: |
+          cp news_dashboard/docs/market.html docs/market.html
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add news_dashboard/docs/
-          git commit -m "월간 뉴스 리포트 자동 업데이트"
+          git add docs/market.html
+          git commit -m "새 대시보드 자동 업데이트"
           git push
